@@ -106,6 +106,7 @@ class VideoClsDataset(Dataset):
             sample = self.dataset_samples[index]
             # T H W C
             buffer = self.load_video(sample, sample_rate_scale=scale_t)
+            
             if len(buffer) == 0:
                 while len(buffer) == 0:
                     warnings.warn(
@@ -210,9 +211,8 @@ class VideoClsDataset(Dataset):
             auto_augment=args.aa,
             interpolation=args.train_interpolation,
         )
-
+        
         buffer = [transforms.ToPILImage()(frame) for frame in buffer]
-
         buffer = aug_transform(buffer)
 
         buffer = [transforms.ToTensor()(img) for img in buffer]
@@ -235,7 +235,6 @@ class VideoClsDataset(Dataset):
             spatial_idx=-1,
             min_scale=256,
             max_scale=320,
-            # crop_size=224,
             crop_size=args.input_size,
             random_horizontal_flip=False if args.data_set == 'SSV2' else True,
             inverse_uniform_sampling=False,
@@ -259,7 +258,6 @@ class VideoClsDataset(Dataset):
 
     def load_video(self, sample, sample_rate_scale=1):
         fname = sample
-
         try:
             vr = self.video_loader(fname)
         except Exception as e:
@@ -514,7 +512,6 @@ class RawFrameClsDataset(Dataset):
         )
 
         buffer = [transforms.ToPILImage()(frame) for frame in buffer]
-
         buffer = aug_transform(buffer)
 
         buffer = [transforms.ToTensor()(img) for img in buffer]

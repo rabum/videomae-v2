@@ -4,15 +4,16 @@ set -x
 export MASTER_PORT=$((12000 + $RANDOM % 20000))
 export OMP_NUM_THREADS=1
 
-OUTPUT_DIR='YOUR_PATH/work_dir/vit_g_hybrid_pt_1200e_k710_ft'
-DATA_PATH='YOUR_PATH/data/k710'
-MODEL_PATH='YOUR_PATH/model_zoo/vit_g_hybrid_pt_1200e.pth'
+OUTPUT_DIR='/root/vit_g_hybrid_pt_1200e_door_ft'
+DATA_PATH='/root/VideoMAEv2/dataset/ourData/'
+MODEL_PATH='/root/vit_g_hybrid_pt_1200e_k710_ft.pth'
+ROOT_PATH='/root/VideoMAEv2/dataset/ourData/'
 
 JOB_NAME=$1
 PARTITION=${PARTITION:-"video"}
 # 8 for 1 node, 16 for 2 node, etc.
-GPUS=${GPUS:-32}
-GPUS_PER_NODE=${GPUS_PER_NODE:-8}
+GPUS=8
+GPUS_PER_NODE=8
 CPUS_PER_TASK=${CPUS_PER_TASK:-14}
 SRUN_ARGS=${SRUN_ARGS:-""}
 PY_ARGS=${@:2}
@@ -29,8 +30,9 @@ srun -p $PARTITION \
         ${SRUN_ARGS} \
         python run_class_finetuning.py \
         --model vit_giant_patch14_224 \
-        --data_set Kinetics-710 \
-        --nb_classes 710 \
+        --data_set ourData \
+        --nb_classes 2 \
+        --data_root ${ROOT_PATH}\
         --data_path ${DATA_PATH} \
         --finetune ${MODEL_PATH} \
         --log_dir ${OUTPUT_DIR} \

@@ -318,7 +318,7 @@ def get_args():
         default='Kinetics-400',
         choices=[
             'Kinetics-400', 'Kinetics-600', 'Kinetics-700', 'SSV2', 'UCF101',
-            'HMDB51', 'Diving48', 'Kinetics-710', 'MIT'
+            'HMDB51', 'Diving48', 'Kinetics-710', 'MIT', 'ourData'
         ],
         type=str,
         help='dataset')
@@ -382,7 +382,7 @@ def get_args():
         default=1,
         type=int,
         help='number of distributed processes')
-    parser.add_argument('--local_rank', default=-1, type=int)
+    parser.add_argument('--local-rank', default=-1, type=int)
     parser.add_argument('--dist_on_itp', action='store_true')
     parser.add_argument(
         '--dist_url',
